@@ -1,6 +1,6 @@
 #
 # Automatically generated file; DO NOT EDIT.
-# Linux/arm64 4.14.277 Kernel Configuration
+# Linux/arm64 4.14.285 Kernel Configuration
 #
 CONFIG_ARM64=y
 CONFIG_64BIT=y
@@ -657,6 +657,9 @@ CONFIG_BINFMT_SCRIPT=y
 # CONFIG_BINFMT_MISC is not set
 CONFIG_COREDUMP=y
 CONFIG_COMPAT=y
+CONFIG_KUSER_HELPERS=y
+# CONFIG_COMPAT_VDSO is not set
+CONFIG_CROSS_COMPILE_ARM32=""
 
 #
 # Power management options
@@ -2037,7 +2040,6 @@ CONFIG_CNSS_GENL=y
 # CONFIG_WAN is not set
 # CONFIG_VMXNET3 is not set
 # CONFIG_ISDN is not set
-# CONFIG_NVM is not set
 
 #
 # Input device support
@@ -2337,6 +2339,7 @@ CONFIG_VSERVICES_SERIAL=y
 CONFIG_VSERVICES_SERIAL_SERVER=y
 CONFIG_VSERVICES_SERIAL_CLIENT=y
 CONFIG_VSERVICES_VTTY_COUNT=8
+CONFIG_RANDOM_TRUST_BOOTLOADER=y
 
 #
 # I2C support
