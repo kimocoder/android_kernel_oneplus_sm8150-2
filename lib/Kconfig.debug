@@ -199,9 +199,22 @@ config DEBUG_INFO_SPLIT
 	  to know about the .dwo files and include them.
 	  Incompatible with older versions of ccache.
 
+config DEBUG_INFO_AS_DWARF2
+       bool "Use DWARF-2 assembler option with debuginfo"
+       #depends on $(cc-option,-Wa$(comma)-gdwarf-2)
+       help
+         Set DWARF-2 assembler option with debuginfo
+
+config DEBUG_INFO_AS_DWARF4
+       bool "Use DWARF-4 assembler option with debuginfo"
+       #depends on $(cc-option,-Wa$(comma)-gdwarf-4)
+       help
+         Set DWARF-4 assembler option with debuginfo
+
 config DEBUG_INFO_DWARF4
 	bool "Generate dwarf4 debuginfo"
 	depends on DEBUG_INFO
+	select DEBUG_INFO_AS_DWARF4
 	help
 	  Generate dwarf4 debug info. This requires recent versions
 	  of gcc and gdb. It makes the debug information larger.
