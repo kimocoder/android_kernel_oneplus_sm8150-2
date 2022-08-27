@@ -2151,7 +2151,6 @@ int __init force_oem_console_setup(char *str)
 	console_setup(str);
 	return 1;
 }
-EXPORT_SYMBOL(force_oem_console_setup);
 
 /**
  * add_preferred_console - add a device to the list of preferred consoles.

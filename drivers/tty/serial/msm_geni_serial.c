@@ -3864,7 +3864,6 @@ static int __init msm_serial_oem_pinctrl_init(void)
 
 	return ret;
 }
-EXPORT_SYMBOL(msm_serial_oem_pinctrl_init);
 
 #define SERIAL_CMDLINE "ttyMSM0,115200n8"
 char oem_force_cmdline_str[60];
@@ -3880,14 +3879,12 @@ int __init msm_serial_oem_init(void)
 
 	return ret;
 }
-EXPORT_SYMBOL(msm_serial_oem_init);
 
 void __exit msm_serial_oem_exit(void)
 {
 	pr_err("%s\n", __func__);
 	msm_geni_serial_exit();
 }
-EXPORT_SYMBOL(msm_serial_oem_exit);
 
 MODULE_DESCRIPTION("Serial driver for GENI based QTI serial cores");
 MODULE_LICENSE("GPL v2");
