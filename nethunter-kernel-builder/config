@@ -1,4 +1,4 @@
-#!/bin/bash
+CC=clang##!/bin/bash
 ##############################################
 # Toolchains
 ##############################################
@@ -16,7 +16,7 @@ export SUBARCH=arm64
 CCACHE=false
 
 # Clang
-export CLANG_ROOT=${TD}/clang-12.0
+export CLANG_ROOT=${TD}/clang-10.0
 export CLANG_PATH=${CLANG_ROOT}/bin
 export PATH=${CLANG_PATH}:${PATH}
 export LD_LIBRARY_PATH=${CLANG_ROOT}/lib64:$LD_LIBRARY_PATH

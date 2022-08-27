@@ -129,10 +129,8 @@ static int __control_devkmsg(char *str)
 
 static int __init control_devkmsg(char *str)
 {
-	if (__control_devkmsg(str) < 0) {
-		pr_warn("printk.devkmsg: bad option string '%s'\n", str);
+	if (__control_devkmsg(str) < 0)
 		return 1;
-	}
 
 	/*
 	 * Set sysctl string accordingly:
@@ -154,7 +152,7 @@ static int __init control_devkmsg(char *str)
 	 */
 	devkmsg_log |= DEVKMSG_LOG_MASK_LOCK;
 
-	return 1;
+	return 0;
 }
 __setup("printk.devkmsg=", control_devkmsg);
 
@@ -770,6 +768,9 @@ static ssize_t devkmsg_write(struct kiocb *iocb, struct iov_iter *from)
 	size_t len = iov_iter_count(from);
 	ssize_t ret = len;
 
+	/* Don't allow userspace to write to /dev/kmesg */
+	return len;
+
 	if (!user || len > LOG_LINE_MAX)
 		return -EINVAL;
 
@@ -1302,13 +1303,11 @@ static size_t msg_print_text(const struct printk_log *msg, bool syslog, char *bu
 
 static int syslog_print(char __user *buf, int size)
 {
-	char *text;
+	char text[LOG_LINE_MAX + PREFIX_MAX];
 	struct printk_log *msg;
 	int len = 0;
 
-	text = kmalloc(LOG_LINE_MAX + PREFIX_MAX, GFP_KERNEL);
-	if (!text)
-		return -ENOMEM;
+	memset(&text, 0, LOG_LINE_MAX + PREFIX_MAX);
 
 	while (size > 0) {
 		size_t n;
@@ -1357,18 +1356,15 @@ static int syslog_print(char __user *buf, int size)
 		buf += n;
 	}
 
-	kfree(text);
 	return len;
 }
 
 static int syslog_print_all(char __user *buf, int size, bool clear)
 {
-	char *text;
+	char text[LOG_LINE_MAX + PREFIX_MAX];
 	int len = 0;
 
-	text = kmalloc(LOG_LINE_MAX + PREFIX_MAX, GFP_KERNEL);
-	if (!text)
-		return -ENOMEM;
+	memset(&text, 0, LOG_LINE_MAX + PREFIX_MAX);
 
 	logbuf_lock_irq();
 	if (buf) {
@@ -1439,7 +1435,6 @@ static int syslog_print_all(char __user *buf, int size, bool clear)
 	}
 	logbuf_unlock_irq();
 
-	kfree(text);
 	return len;
 }
 
@@ -2102,15 +2097,8 @@ static int __init console_setup(char *str)
 	char *s, *options, *brl_options = NULL;
 	int idx;
 
-	/*
-	 * console="" or console=null have been suggested as a way to
-	 * disable console output. Use ttynull that has been created
-	 * for exacly this purpose.
-	 */
-	if (str[0] == 0 || strcmp(str, "null") == 0) {
-		__add_preferred_console("ttynull", 0, NULL, NULL);
+	if (str[0] == 0)
 		return 1;
-	}
 
 	if (_braille_console_setup(&str, &brl_options))
 		return 1;
@@ -2145,13 +2133,6 @@ static int __init console_setup(char *str)
 	return 1;
 }
 __setup("console=", console_setup);
-
-int __init force_oem_console_setup(char *str)
-{
-	console_setup(str);
-	return 1;
-}
-EXPORT_SYMBOL(force_oem_console_setup);
 
 /**
  * add_preferred_console - add a device to the list of preferred consoles.
@@ -2194,7 +2175,7 @@ void suspend_console(void)
 {
 	if (!console_suspend_enabled)
 		return;
-	printk("Suspending console(s) (use no_console_suspend to debug)\n");
+	pr_debug_once("Suspending console(s) (use no_console_suspend to debug)\n");
 	console_lock();
 	console_suspended = 1;
 	up_console_sem();
