@@ -24,6 +24,10 @@ hostprogs-$(CONFIG_SYSTEM_TRUSTED_KEYRING) += extract-cert
 hostprogs-$(CONFIG_SYSTEM_EXTRA_CERTIFICATE) += insert-sys-cert
 
 HOSTCFLAGS_sortextable.o = -I$(srctree)/tools/include
+HOSTCFLAGS_extract-cert.o += -DOPENSSL_API_COMPAT=0x10100000L
+CRYPTO_LIBS = $(shell pkg-config --libs libcrypto 2> /dev/null || echo -lcrypto)
+CRYPTO_CFLAGS = -DOPENSSL_API_COMPAT=0x10100000L
+#CRYPTO_CFLAGS = $(shell pkg-config --cflags libcrypto 2> /dev/null)
 HOSTCFLAGS_asn1_compiler.o = -I$(srctree)/include
 HOSTCFLAGS_sign-file.o = $(CRYPTO_CFLAGS)
 HOSTLOADLIBES_sign-file = $(CRYPTO_LIBS)
