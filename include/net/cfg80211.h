@@ -1,4 +1,3 @@
-/* SPDX-License-Identifier: GPL-2.0-only */
 #ifndef __NET_CFG80211_H
 #define __NET_CFG80211_H
 /*
@@ -7,7 +6,10 @@
  * Copyright 2006-2010	Johannes Berg <johannes@sipsolutions.net>
  * Copyright 2013-2014 Intel Mobile Communications GmbH
  * Copyright 2015-2017	Intel Deutschland GmbH
- * Copyright (C) 2018-2019 Intel Corporation
+ *
+ * This program is free software; you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License version 2 as
+ * published by the Free Software Foundation.
  */
 
 #include <linux/netdevice.h>
@@ -6558,11 +6560,6 @@ int cfg80211_external_auth_request(struct net_device *netdev,
 	dev_notice(&(wiphy)->dev, format, ##args)
 #define wiphy_info(wiphy, format, args...)			\
 	dev_info(&(wiphy)->dev, format, ##args)
-
-#define wiphy_err_ratelimited(wiphy, format, args...)		\
-	dev_err_ratelimited(&(wiphy)->dev, format, ##args)
-#define wiphy_warn_ratelimited(wiphy, format, args...)		\
-	dev_warn_ratelimited(&(wiphy)->dev, format, ##args)
 
 #define wiphy_debug(wiphy, format, args...)			\
 	wiphy_printk(KERN_DEBUG, wiphy, format, ##args)
