@@ -1510,9 +1510,7 @@ static int rtl8192eu_power_on(struct rtl8xxxu_priv *priv)
 {
 	u16 val16;
 	u32 val32;
-	int ret;
-
-	ret = 0;
+	int ret = 0;
 
 	val32 = rtl8xxxu_read32(priv, REG_SYS_CFG);
 	if (val32 & SYS_CFG_SPS_LDO_SEL) {
